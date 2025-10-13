@@ -344,6 +344,7 @@ local function buildPhonemeMaker()
 		self.filters = table.Flip(self.filters)
 	end
 
+	local oldThink = frame.Think
 	function frame:Think()
 		local entity = getFaceposerEntity(LocalPlayer())
 		if not entity then
@@ -351,6 +352,8 @@ local function buildPhonemeMaker()
 		end
 
 		self.presets:SetEntity(entity)
+
+		return oldThink(self)
 	end
 
 	frame.addButton = vgui.Create("DButton", frame.form)
@@ -440,6 +443,10 @@ local function openPhonemeMaker()
 end
 
 local function closePhonemeMaker()
+	if not IsValid(VLAZED_PHONEME_MAKER) then
+		return
+	end
+
 	if VLAZED_PHONEME_MAKER:GetHangOpen() then
 		VLAZED_PHONEME_MAKER:SetHangOpen(false)
 		return
