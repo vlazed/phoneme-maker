@@ -36,7 +36,7 @@ end
 ---@return PhonemePreset
 local function makePresetFile(model, presetGroup)
 	local presetFile = {
-		PresetGroups = presetGroup,
+		PresetGroups = { presetGroup },
 		Model = model,
 	}
 
@@ -419,7 +419,10 @@ VLAZED_PHONEME_MAKER = VLAZED_PHONEME_MAKER
 if VLAZED_PHONEME_MAKER then
 	VLAZED_PHONEME_MAKER:Remove()
 end
-VLAZED_PHONEME_MAKER = buildPhonemeMaker()
+-- After a few ticks, vgui components should be available
+timer.Simple(0.1, function()
+	VLAZED_PHONEME_MAKER = buildPhonemeMaker()
+end)
 
 local function openPhonemeMaker()
 	if faceposerEquipped(LocalPlayer()) and IsValid(VLAZED_PHONEME_MAKER) and not VLAZED_PHONEME_MAKER:IsVisible() then
