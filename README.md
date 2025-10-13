@@ -14,7 +14,7 @@ Make phoneme, viseme, or emotion presets for the Phoneme Tool
 
 ![phonememaker_ui](media/phonememaker_ui.png)
 
-This adds a floating Phoneme Maker panel to the left of the context menu, which allows one to make own preset groups for the Phoneme Tool
+This adds a floating Phoneme Maker panel to the left of the Faceposer context menu, which allows one to make own preset groups for the Phoneme Tool. Faceposer must be equipped to see the above UI
 
 ### Features
 
