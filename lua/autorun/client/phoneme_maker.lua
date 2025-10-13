@@ -297,12 +297,28 @@ local function buildPhonemeMaker()
 	function frame.presets:OnLoadPreset(preset)
 		frame.entryForm:Clear()
 
-		local presetGroup = preset.PresetGroups[1]
-		for _, p in ipairs(presetGroup.Presets) do
+		-- Get the preset group according to the combo value.
+		-- Default to the first one if it doesn't exist
+		local desiredPresetGroup = preset.PresetGroups[1]
+		for _, presetGroup in ipairs(preset.PresetGroups) do
+			if presetGroup.Name == frame.combo:GetValue() then
+				desiredPresetGroup = presetGroup
+				break
+			end
+		end
+		for _, p in ipairs(desiredPresetGroup.Presets) do
 			makeEntry(frame.entryForm, frame.filterEntry, p.Name, p.ControlValues)
 		end
 	end
 	frame.form:AddItem(frame.presets)
+
+	---@diagnostic disable-next-line: missing-parameter
+	local combo = frame.form:ComboBox("Preset Group Type")
+	---@cast combo DComboBox
+	frame.combo = combo
+	frame.combo:AddChoice("Emotion")
+	frame.combo:AddChoice("Phoneme")
+	frame.combo:AddChoice("Viseme", nil, true)
 
 	frame.form:Help(
 		"You can only edit one preset group at a time. If you want to combine preset groups, you can manually edit the text file and append to the preset groups"
@@ -336,14 +352,6 @@ local function buildPhonemeMaker()
 
 		self.presets:SetEntity(entity)
 	end
-
-	---@diagnostic disable-next-line: missing-parameter
-	local combo = frame.form:ComboBox("Preset Group Type")
-	---@cast combo DComboBox
-	frame.combo = combo
-	frame.combo:AddChoice("Emotion")
-	frame.combo:AddChoice("Phoneme")
-	frame.combo:AddChoice("Viseme", nil, true)
 
 	frame.addButton = vgui.Create("DButton", frame.form)
 	frame.addButton:SetText("Add entry")
@@ -414,7 +422,7 @@ local function buildPhonemeMaker()
 	return frame
 end
 
----@type DFrame
+---@type PhonemeMaker
 VLAZED_PHONEME_MAKER = VLAZED_PHONEME_MAKER
 if VLAZED_PHONEME_MAKER then
 	VLAZED_PHONEME_MAKER:Remove()
