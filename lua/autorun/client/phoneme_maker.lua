@@ -21,6 +21,10 @@
 ---@field PresetGroups PresetGroup[]
 ---@field Model string
 
+do
+	return
+end
+
 local DIRECTORY = "phonemetool"
 
 ---@param ply Player
@@ -344,7 +348,6 @@ local function buildPhonemeMaker()
 		self.filters = table.Flip(self.filters)
 	end
 
-	local oldThink = frame.Think
 	function frame:Think()
 		local entity = getFaceposerEntity(LocalPlayer())
 		if not entity then
@@ -352,8 +355,6 @@ local function buildPhonemeMaker()
 		end
 
 		self.presets:SetEntity(entity)
-
-		return oldThink(self)
 	end
 
 	frame.addButton = vgui.Create("DButton", frame.form)
