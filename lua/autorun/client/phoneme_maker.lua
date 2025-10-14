@@ -21,10 +21,6 @@
 ---@field PresetGroups PresetGroup[]
 ---@field Model string
 
-do
-	return
-end
-
 local DIRECTORY = "phonemetool"
 
 ---@param ply Player
