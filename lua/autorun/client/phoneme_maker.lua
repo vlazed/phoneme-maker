@@ -345,6 +345,14 @@ local function buildPhonemeMaker()
 	end
 
 	function frame:Think()
+		local x, y = input.GetCursorPos()
+		if self:TestHover(x, y) then
+			self:MakePopup()
+		else
+			VLAZED_PHONEME_MAKER:SetMouseInputEnabled(false)
+			VLAZED_PHONEME_MAKER:SetKeyboardInputEnabled(false)
+		end
+
 		local entity = getFaceposerEntity(LocalPlayer())
 		if not entity then
 			return
@@ -419,6 +427,11 @@ local function buildPhonemeMaker()
 		self:SetKeyboardInputEnabled(false)
 	end
 
+	function frame:TestHover(x, y)
+		local x, y = self:ScreenToLocal(x, y)
+		return (x >= 0 and x <= self:GetWide()) and (y >= 0 and y <= self:GetTall())
+	end
+
 	return frame
 end
 
@@ -435,7 +448,7 @@ end)
 local function openPhonemeMaker()
 	if faceposerEquipped(LocalPlayer()) and IsValid(VLAZED_PHONEME_MAKER) and not VLAZED_PHONEME_MAKER:IsVisible() then
 		VLAZED_PHONEME_MAKER:SetVisible(true)
-		VLAZED_PHONEME_MAKER:MakePopup()
+		-- VLAZED_PHONEME_MAKER:MakePopup()
 	end
 end
 
