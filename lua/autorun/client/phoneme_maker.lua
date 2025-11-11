@@ -116,12 +116,16 @@ local function makeEntry(parent, filter, name, controlValues)
 	parent:AddItem(entry)
 
 	entry.name = vgui.Create("DTextEntry", entry)
+	---@class PhonemeSave: DImageButton
 	entry.save = vgui.Create("DImageButton", entry)
 	entry.save:SetImage("icon16/disk.png")
 	entry.save:SetTooltip("Record flexes")
+	---@class PhonemePreview: DImageButton
 	entry.preview = vgui.Create("DImageButton", entry)
 	entry.preview:SetTooltip("Preview flexes")
 	entry.preview:SetImage("icon16/eye.png")
+
+	---@class PhonemeClose: DImageButton
 	entry.close = vgui.Create("DImageButton", entry)
 	entry.close:SetTooltip("Remove entry")
 	entry.close:SetImage("icon16/cross.png")
@@ -251,6 +255,17 @@ local function GenerateDefaultFlexValue(ent, flexID)
 	return (0 - min) / (max - min)
 end
 
+---@param frame Panel
+---@param x number
+---@param y number
+---@return boolean
+local function checkWithinBounds(frame, x, y)
+	local xo, yo = frame:GetPos()
+	local w, h = frame:GetWide(), frame:GetTall()
+
+	return x > xo and x <= (xo + w) and y > yo and y <= (yo + h)
+end
+
 ---@return PhonemeMaker
 local function buildPhonemeMaker()
 	local width, height = ScrW(), ScrH()
@@ -346,11 +361,12 @@ local function buildPhonemeMaker()
 
 	function frame:Think()
 		local x, y = input.GetCursorPos()
-		if self:TestHover(x, y) then
+		self.hovered = self:TestHover(x, y)
+		if self.hovered and not self:IsMouseInputEnabled() then
 			self:MakePopup()
-		else
-			VLAZED_PHONEME_MAKER:SetMouseInputEnabled(false)
-			VLAZED_PHONEME_MAKER:SetKeyboardInputEnabled(false)
+		elseif not self.hovered and self:IsMouseInputEnabled() then
+			self:SetMouseInputEnabled(false)
+			self:SetKeyboardInputEnabled(false)
 		end
 
 		local entity = getFaceposerEntity(LocalPlayer())
@@ -361,11 +377,14 @@ local function buildPhonemeMaker()
 		self.presets:SetEntity(entity)
 	end
 
+	---@class PhonemeFrameAdd: DButton
 	frame.addButton = vgui.Create("DButton", frame.form)
 	frame.addButton:SetText("Add entry")
+	---@class PhonemeFrameReset: DButton
 	frame.resetButton = vgui.Create("DButton", frame.form)
 	frame.resetButton:SetText("Reset flexes")
 	frame.resetButton:SetTooltip("Set flexes to their default values")
+	---@class PhonemeFrameRemove: DButton
 	frame.removeButton = vgui.Create("DButton", frame.form)
 	frame.removeButton:SetText("Clear all entries")
 
