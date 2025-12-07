@@ -497,13 +497,13 @@ local function menuKeyboardFocusOn(pnl)
 		VLAZED_PHONEME_MAKER:StartKeyFocus(pnl)
 	end
 end
-hook.Remove("OnTextEntryGetFocus", "menuKeyboardFocusOn")
-hook.Add("OnTextEntryGetFocus", "menuKeyboardFocusOn", menuKeyboardFocusOn)
+hook.Remove("OnTextEntryGetFocus", "phoneme_maker_menuKeyboardFocusOn")
+hook.Add("OnTextEntryGetFocus", "phoneme_maker_menuKeyboardFocusOn", menuKeyboardFocusOn)
 
 local function menuKeyboardFocusOff(pnl)
 	if IsValid(VLAZED_PHONEME_MAKER) and IsValid(pnl) and pnl:HasParent(VLAZED_PHONEME_MAKER) then
 		VLAZED_PHONEME_MAKER:EndKeyFocus(pnl)
 	end
 end
-hook.Remove("OnTextEntryLoseFocus", "menuKeyboardFocusOff")
-hook.Add("OnTextEntryLoseFocus", "menuKeyboardFocusOff", menuKeyboardFocusOff)
+hook.Remove("OnTextEntryLoseFocus", "phoneme_maker_menuKeyboardFocusOff")
+hook.Add("OnTextEntryLoseFocus", "phoneme_maker_menuKeyboardFocusOff", menuKeyboardFocusOff)
